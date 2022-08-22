@@ -1,4 +1,10 @@
-using LinearAlgebra, SparseArrays
+using LinearAlgebra, SparseArrays#, 
+#import PyCall: convert
+
+# In Julia isn't mandatory to set the type of the entries of the function, but it improves 
+# the speed of compilation and execution of the functions. Also helps to debugs 
+# only certain compiled methods and not the whole function, taking advantage of the 
+# multiple dispatch capabilities of Julia.
 
 #=
     Checks if an entry of an a Tuple what represents a point in the cristaline laticce is a valid
@@ -133,7 +139,7 @@ end
 #= With no other orguments provided, create_zz_hamiltonian generates a matrix and a number of
 qubits (as many as atoms in the lattice), also, supose a homogeneous interaction. We are
 using the multiple dispatchs capabilities of Julia. This function receives a tuple with 3 elements and 
-returns a hamiltonian Matrix and the number of qbits needed to perform subsequent operations.
+returns a hamiltonian Matrix, number of qubits, interaction coefficients, and a vector of connectivities. 
 =# 
 function create_zz_hamiltonian(dims::Tuple{Int64,Int64,Int64})
     
@@ -144,7 +150,19 @@ function create_zz_hamiltonian(dims::Tuple{Int64,Int64,Int64})
     
     zz_hamiltonian = create_zz_hamiltonian(num_qbits,connectivities,h_coeffs)
     
-    zz_hamiltonian = real.(zz_hamiltonian)  # We took only the real part
+    #zz_hamiltonian = real.(zz_hamiltonian)  # We took only the real part
     
     return zz_hamiltonian, num_qbits, h_coeffs, connectivities
+end
+
+
+#= Given a vector of connectivities (with Python indexing [starting with 0]), generate a hogeneous Ising hamiltonian automatically.
+returns a hamiltonian Matrix, number of qubits, interaction coefficients, and the vector of connectivities. =#
+function create_zz_hamiltonian(connectivities::Vector{Vector{Int}})
+    num_qubits = length(unique(vcat(connectivities...)))
+    h_coeffs = ones(num_qubits)
+    
+    zz_hamiltonian = create_zz_hamiltonian(num_qubits::Int,connectivities::Vector{Vector{Int}},
+    h_coeffs::Vector{Float64})
+    return zz_hamiltonian, num_qubits, h_coeffs, connectivities
 end
