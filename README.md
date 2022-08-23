@@ -57,7 +57,7 @@ The choice of Hamiltonian affects the degrees of freedom and the SQRs.
 
 The benefit of DAQC VQE compared to a method with only digital blocks is the ability of entanglement in the analog ansatz. This provides significant speed up and more iterations, thus more accurate result. 
 
-As one can see from the VQE_on_DAQC_by_WinQC.ipynb, our best ansatzes leave us with a $\Delta$ that is an order of magnitude lower than the $\Delta$ produced by digital methods.
+As one can see from the VQE_on_DAQC_by_WinQC.ipynb, our best ansatzes leave us with a $\Delta = 0.00458$ that is an order of magnitude lower than the $\Delta = 0.01475$ produced by digital methods when both are simulated in a noise and error mitigated environment.
 
 ### **Results**
 The tests included three different types of DAQC hamiltonian implementations along with a purely digital implementation of a VQE as a comparison.
@@ -69,11 +69,11 @@ The three different $2$-qubit Hamiltonian implementation types were the followin
 
 A purely digital implementation of VQE is also used as a comparison.
 
-Below are the graphs comparing the three different implementations and how well they are able to estimate the ground state value. In the first one, for simplicity, only the noiseless results are shown. The $x$-axis shows how these results change when more analog-digital block pairs are added. The digital-only method of estimation is absent from the graph as it is an order of magnitude further away from the reference value at $\Delta = 0.79027$. The second graph shows how well the ground state can be estimated when the amount of analog-digital block pairs numbers 2. On the $x$-axis are the different VQE implementation methods, and their noiseless, noisy and noise and error corrected version results.
+Below are the graphs comparing the three different implementations and how well they are able to estimate the ground state value. In the first one, for simplicity, only the noiseless results are shown. The $x$-axis shows how these results change when more analog-digital block pairs are added. The second graph shows how well the ground state can be estimated when the amount of analog-digital block pairs numbers 2. On the $x$-axis are the different VQE implementation methods, and their noiseless, noisy and noise and error corrected version results.
 
 ![image.png](https://i.imgur.com/xxOzsP1.png)
 
-![image.png](https://i.imgur.com/ofn7yAe.png)
+![image.png](https://i.imgur.com/6L00RHo.png)
 
 We have implemented a function that plots all the different ways of simulating our ansatz. To illustrate, we have plotted the results of our best performing ansatz; the ansatz with fixed Hamiltonian coefficients of $1.0$ and parametrised time with 2 analog-digital block pairs ($D-A-D-A-D$).
 
