@@ -29,6 +29,16 @@ The set of connectivities to be provided to the functions are
 Also if we consider a simple cubic lattice (P), and a cristal of 3D dimensions (x,y,z) up to 12 atoms, 
 the code can resolve how many qubits do we need to simulate the hamiltonian, which would be 
 the unique connectivities, and a set of uniform interaction coefficients.
+
+For a ring
+
+A(0) - A(1) - A(2) - ... -A(n) - A(0)
+
+The connectivities would be 
+
+[[0,1], [1,2], ... [n,0]]
+
+
 =#
 
 using LinearAlgebra, SparseArrays # Packages, both Julia native. 
@@ -39,7 +49,7 @@ using LinearAlgebra, SparseArrays # Packages, both Julia native.
 # multiple dispatch capabilities of Julia.
 
 #=
-    Checks if an entry of an a Tuple what represents a point in the cristaline laticce is a valid
+    Checks if an entry of an a Tuple what represents a point in the cristaline lattice is a valid
         point, if some of entry is not in the defined ranges, the function returns false.
     Receives a 3D tuple as a point an a set of ranges. 
 =#
@@ -57,7 +67,7 @@ end
 
 
 #=
-    Generates a list of valid neighbohrs positons of certain point in the laticce.
+    Generates a list of valid neighbohrs positons of certain point in the lattice.
     Receives a 3D tuple point, and a set of ranges. Returns an array of valid 
     neighbohrs (tuples) given a point.
 =#
