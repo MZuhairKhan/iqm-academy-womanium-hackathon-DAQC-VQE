@@ -24,13 +24,13 @@ Shilan Abo   (Discord id-> shilqc #7311, Github id-> Shilqc, Email-> shsavan@icl
 
 **Overview**
 
-The Variational Quantum Eigensolver algorithm (VQE) method provides a way of approximating the lowest energy eigenstate. In this approach we prepare a guess state $\psi(\Theta)$ as $|\psi(\Theta)\rangle = \sum_n a_n |\psi_n\rangle$
+The Variational Quantum Eigensolver algorithm (VQE) method provides a way of approximating the lowest energy eigenstate. In this approach we prepare a guess state $\psi(\Theta)$ as $|\psi(\Theta)\rangle = \sum_n a_n |\psi_n\rangle$.
 
 Then, for any arbitrary state, we know 
 
-$\langle \psi(\Theta)|H |\psi(\theta)\rangle = (\sum_n a^*_n \langle \psi_n|)H(\sum_m a_m |\psi_m\rangle) = \sum_n |a_n|^2 \langle \psi_n|H |\psi_n\rangle= \sum a_n^2 E_n \ge \sum_n a_n^2 E_0 \approx E_0$
+$$\langle \psi(\Theta)|H |\psi(\theta)\rangle = (\sum_n a^*_n \langle \psi_n|)H(\sum_m a_m |\psi_m\rangle) = \sum_n |a_n|^2 \langle \psi_n|H |\psi_n\rangle= \sum a_n^2 E_n \ge \sum_n a_n^2 E_0 \approx E_0$$
 
-So in Variational principle $\frac{\langle \psi(\Theta)| H |\psi(Θ)\rangle}{\langle \psi(\Theta)|\psi(\Theta)\rangle} \ge E_0$, where here $E_{guess}=\langle \psi(\Theta)| H |\psi(\Theta)\rangle$
+So in Variational principle $\frac{\langle \psi(\Theta)| H |\psi(\Theta)\rangle}{\rangle \psi(\Theta)|\psi(\Theta)\rangle} \ge E_0$, where here $E_{guess}=\langle \psi(\Theta)| H |\psi(\Theta)\rangle$.
 
 We can optimize $\Theta$ in the guess state so that we are left (hopefully) with a close upper bound to $E_0$.
 **Implementation**
