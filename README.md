@@ -20,7 +20,7 @@ Shilan Abo   (Discord id-> shilqc #7311, Github id-> Shilqc, Email-> shsavan@icl
 
 **Pitch Presenter**: Mohammad Zuhair Khan
 
-**Challenge:**: Digital-analog Variational Quantum Eigensolver (IQM)
+**Challenge:** Digital-analog Variational Quantum Eigensolver (IQM)
 
 **Note: if the $\LaTeX$ is broken, you can view this page [here](https://colab.research.google.com/drive/1LhcSCmQxNmvHYG0BqZRndlL9zfyOe_dk?usp=sharing).**
 
