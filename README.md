@@ -22,6 +22,8 @@ Shilan Abo   (Discord id-> shilqc #7311, Github id-> Shilqc, Email-> shsavan@icl
 
 **Challenge:**: Digital-analog Variational Quantum Eigensolver (IQM)
 
+**Note: if the $\LaTeX$ is broken, you can view this page ![here](https://colab.research.google.com/drive/1LhcSCmQxNmvHYG0BqZRndlL9zfyOe_dk?usp=sharing).
+
 **Overview**
 
 The Variational Quantum Eigensolver algorithm (VQE) method provides a way of approximating the lowest energy eigenstate. In this approach we prepare a guess state $\psi(\Theta)$ as $|\psi(\Theta)\rangle = \sum_n a_n |\psi_n\rangle$.
@@ -55,17 +57,44 @@ The choice of Hamiltonian affects the degrees of freedom and the SQRs.
 
 The benefit of DAQC VQE compared to a method with only digital blocks is the ability of entanglement in the analog ansatz. This provides significant speed up and more iterations, thus more accurate result. 
 
+As one can see from the VQE_on_DAQC_by_WinQC.ipynb, our best ansatzes leave us with a $\Delta$ that is an order of magnitude lower to the $\Delta$ produced by digital methods.
+
 ### **Results**
 The tests included three different types of DAQC hamiltonian implementations along with a purely digital implementation of a VQE as a comparison.
 
-The three different 2-qubit Hamiltonian implementation types were the following:
+The three different $2$-qubit Hamiltonian implementation types were the following:
  1. Both time and the hamiltonian coefficients were parameters, but the coefficients were constant between the analog blocks.
  2. Both time and the hamiltonian coefficients were parameters, and the coefficients could vary between the analog blocks.
  3. The hamiltonian coefficients were fixed as $1.0$ and time was the only parameter.
 
 A purely digital implementation of VQE is also used as a comparison.
 
-Below are the graphs comparing the three different implementations and how well they are able to estimate the ground state value, the x-axis shows how these results change when more digital-analog blocks are added. The digital-only method of estimation is absent from the graph as it is several orders of magnitude further away from the reference value at $\Delta = 0.79027$.
+Below are the graphs comparing the three different implementations and how well they are able to estimate the ground state value. In the first one, for simplicity, only the noiseless results are shown. The $x$-axis shows how these results change when more analog-digital block pairs are added. The digital-only method of estimation is absent from the graph as it is an order of magnitude further away from the reference value at $\Delta = 0.79027$. The second graph shows how well the ground state can be estimated when the amount of analog-digital block pairs numbers 2. On the $x$-axis are the different VQE implementation methods, and their noiseless, noisy and noise and error corrected version results.
+
+![image.png](https://i.imgur.com/xxOzsP1.png)
+
+![image.png](https://i.imgur.com/ofn7yAe.png)
+
+We have implemented a function that plots all the different ways of simulating our ansatz. To illustrate, we have plotted the results of our best performing ansatz; the ansatz with fixed Hamiltonian coefficients of $1.0$ and parametrised time with 2 analog-digital block pairs ($D-A-D-A-D$).
+
+Our results are as follows:
+
+Reference value: $-1.85728$
+
+VQE on Aer qasm simulator (no noise): $-1.85496$
+
+Delta from reference energy value is $0.00231$
+
+VQE on Aer qasm simulator (with noise): $-1.80451$
+
+Delta from reference energy value is $0.05276$
+
+VQE on Aer qasm simulator (with noise and measurement error mitigation): $-1.86186$
+
+Delta from reference energy value is $-0.00458$
 
 ![image.png](https://i.imgur.com/jFRtDwe.png)
 
+**Next Steps**
+
+The next logical step for the VQE with the DAQC framework for the $H_2$ molecule would be to increase the number of qubits to four since that would expand the Hilbert space, and that would yield better results. Currently, it is impossible for Qiskit to create hamiltonians with Y gates, because we can not transform the Parameter to a float, as shown [here](https://github.com/Qiskit/qiskit-terra/issues/4751). However, the commenters showed some possible ways this may be feasible in the future. Along with this, the complexity of the simulated molecule could be increased to a system requiring more qubits such as the $\text H_2\text O$ molecule. 
