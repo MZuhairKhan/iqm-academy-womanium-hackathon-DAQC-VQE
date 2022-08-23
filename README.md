@@ -1,109 +1,44 @@
-# Digital-analog Variational Quantum Eigensolver
+# WinQC - VQE on DAQC
 
 *A challenge provided by IQM Quantum Computers*
 
-This repository contains description and examples for the DAQC VQE challenge for the Womanium Hackathon 2022.
+This repository contains the WinQC team's solution to the DAQC VQE challenge for the Womanium Hackathon 2022.
 
-## Summary
+**Team Name**: <font color='green'>**WinQC**</font>
 
-This task is to develop a new VQE ansatz based on the digital-analog quantum computing (DAQC) framework. The ansatz will combine analog evolution of the processor hamiltonian with single qubit gates placed at the right time intervals. The model has potential to be “more hardware efficient” than typical hardware efficient ansätze.
+**Team members**:
 
-## Motivation
+Nikolas Klemola Tango (Discord id-> nick#2491 , Github id-> Nickname88888, Email-> nikoklemola2011@hotmail.com)
 
-An important task in Quantum Chemistry is to find the ground state energy of the system in question. This ground state energy actually corresponds to the minimal eigenvalue of the Hamiltonian of the system. The Variational Quantum Eigensolver algorithm (VQE) is one way to estimate this minimal eigenvalue that can actually be executed on a NISQ device.
-However, in the NISQ era the noise introduced by gates is a problem. Digital-Analog Quantum Computing (DAQC) allows us to reduce the number of gates needed to perform quantum algorithms. It combines digital single qubit gates with analog multi-qubit blocks.
-VQE is one of the algorithms, where DAQC has the potential to be “more hardware efficient” and thus allow for better ground state energy estimation than purely digital quantum computing in the NISQ era.
+Tereza Viskova (Discord id-> Terkasaurus#6388 , Github id-> tervisk, Email-> terezaviskova1997@gmail.com )
 
-## Technical description
+Mohammad Zuhair Khan (Discord id-> Raptor#6814 , Github id-> MZuhairKhan, Email-> khanmohammadzuhair@gmail.com)
 
-The VQE estimates the minimal eigenvalue $λ_{min}$ of a given (Hermitian) matrix $H$ by giving an upper boundary $\lambda_\Theta$ with $\lambda_{min} \leq \lambda_{\Theta}$. The corresponding eigenstate is noted as $\ket{ψ_{min}}$.
+César Bertoni Ocampo (Discord id-> Ceboc#2938 , Github id->Ceboc, Email-> bertoni@ciencias.unam.mx) 
 
-In order to find a good upper boundary, VQE uses a parametrized circuit U with parameters $θ=(p_1,p_2,…)$ (referred to as $U(θ)$ ). The idea is that the algorithm learns the best parameters to prepare the eigenstate $\ket{ψ(θ)}$ that belongs to the upper bound $λ_θ$. For this an ansatz is chosen. Ansätze (plural for ansatz) describe how sequences of gates are applied to qubits.
+Shilan Abo   (Discord id-> shilqc #7311, Github id-> Shilqc, Email-> shsavan@icloud.com) 
 
-This circuit $U$ is then applied to some prepared state $\ket{ψ}$ (can be $\ket{0..0}$ though). This leaves us with the trial state:
+**Pitch Presenter**: Mohammad Zuhair Khan
 
-$$U(θ)|ψ⟩=|ψ(θ)⟩$$
+**Challenge:**: Digital-analog Variational Quantum Eigensolver (IQM)
 
-From this state, $λ_θ$ can be retrieved as the expectation value of:
-$$⟨ψ(θ)|H|ψ(θ)⟩=λ_θ$$  
+**Overview**
 
-In the beginning this expectation value will be way off. But we can now use classical postprocessing to minimize the expectation value by iteratively finding better parameters $θ=(p_1,p_2,…)$.
+The Variational Quantum Eigensolver algorithm (VQE) method provides a way of approximating the lowest energy eigenstate. In this approach we prepare a guess state $\psi(\Theta)$ as $|\psi(\Theta)\rangle = \sum_n a_n |\psi_n\rangle$
 
-![Variational algorithm principle](assets/variational-algorithms.png)
+Then, for any arbitrary state, we know 
 
-For quantum chemistry, you can now do the following: 
-1. Get the molecule’s Hamiltonian. Let’s assume it has the terms $Z_1$, $Z_1 Z_2$, $X_1 X_2 Y_1 Y_2$, 
-2. Prepare the trial state $|ψ(θ)⟩$ by your ansatz, 
-3. Measure the expectation value of the terms $Z_1$, $Z_1 Z_2$, $X_1 X_2 Y_1 Y_2$ for that trial state. With many measurements of these three quantities, you construct the total expectation value of the molecule's Hamiltonian and keep optimizing it classically.
+$\langle \psi(\Theta)|H |\psi(\theta)\rangle = (\sum_n a^*_n \langle \psi_n|)H(\sum_m a_m |\psi_m\rangle) = \sum_n |a_n|^2 \langle \psi_n|H |\psi_n\rangle= \sum a_n^2 E_n \ge \sum_n a_n^2 E_0 \approx E_0$
 
+So in Variational principle $\frac{\langle \psi(\Theta)| H |\psi(Θ)\rangle}{\langle \psi(\Theta)|\psi(\Theta)\rangle} \ge E_0$, where here $E_{guess}=\langle \psi(\Theta)| H |\psi(\Theta)\rangle$
 
-Normally, VQE uses digital quantum gates. However, the multi-qubit gates involved in a VQE ansatz can be switched to analog multi-qubit blocks.  
-
-The challenge is to combine both approaches and create a VQE implementation that uses analog multi-qubit blocks. This is a promising approach to utilize DAQC. Your first challenge is to develop a circuit ansatz and choose a parametrization for it.
-
-Start trying with a nearest-neighbors Ising Hamiltonian on a one-dimensional device (where all N qubits are lined up in a string like so: x—x—x—x):
+We can optimize $\Theta$ in the guess state so that we are left (hopefully) with a close upper bound to $E_0$.
+**Implementation**
 
 
-  ![Formula](assets/formula0.png)
+Because gate noise is a problem in the NISQ era, we combine digital single-qubit operations with analog multi-qubit entangling blocks in a method known as digital-analog quantum computing (DAQC). We can use either a homogeneous nearest neighbor $H_{zz}=\sum_{j}g_{jj+1}Z^jZ^{j+1}$ or a homogeneous all-to-all two-body Ising Hamiltonian ($H_{zz}=\sum_{j>k}g_{jk}Z^jZ^k$) as analog blocks.
 
-After this, your new version should be compared to a solely digital approach (one that uses just normal gates). Then you can really spice things up and see how things change. We have some recommendations below.
-
-The project is judged according to the following metrics:
-
-* Technical soundness: You will receive full points in this category if you have a working implementation for a DAQC VQE and if you have it applied to one example use-case (e.g. for a $H^2$ molecule ... (additional problems give extra points)) (40%).
-* Analysis: You will receive full points in this category if you compared the DAQC approach to a solely digital quantum computing approach by answering at least 2 questions. Example questions can be: “How do different Hamiltonians affects the DAQC VQE?” How much more accurate do we get in different configurations? How does it compare to digital quantum computing?) (20%).
-* Explanation: You will receive full points if you are able to communicate your idea and analysis in an understandable way. This can be done via text in the Jupyter notebook, explanations in the code, and by establishing links to existing theory (20%).
-* Presentation: Part of the judgement is also how you present your result. The presentation should be engaging and insightful (20%).
-
-
-## Jupyter Notebooks
-We prepared/curated two notebooks that will help you grasp the concepts involved in this challenge description.
-The first is an implementation of the Variational Quantum Eigensolver. In this notebook, we will use Qiskit to apply VQE to estimate the ground energy of the $H^2$ molecule.
-
-[IQM-challenge-variational-quantum-eigensolver.pynb](https://github.com/iqm-finland/iqm-academy-womanium-hackathon-DAQC-VQE/blob/main/IQM-challenge-variational-quantum-eigensolver.ipynb)
-
-The second notebook will show you how to build an analog multi-qubit block in Qiskit. This uses the HamiltonianGate class for the analog building blocks.
-
-[IQM-challenge-DAQC example-qiskit.ipynb](https://github.com/iqm-finland/iqm-academy-womanium-hackathon-DAQC-VQE/blob/main/IQM-challenge-DAQC%20example-qiskit.ipynb)
-
-## Ideas for experimentation
-After you finished your first implementation of DAQC VQE, we encourage you to experiment with the concept and your code. Please find below some ideas:
-* Instead of just a two-body Ising Hamiltonian you can also include three-body terms such as: 
-  
-  ![Formula](assets/formula.png)
-  
-  As there are more entangling terms, this Hamiltonian may allow for more entanglement per layer of the ansatz. How does that affect the result, or the number of layers required?
-
-* Imagine two different configurations of nearest-neighbors Hamiltonians. One of them is a 1D chain, and the other is a central architecture (star shape). Both have the same number of qubits and connections, but in different configurations. Which one performs better? Any hypothesis why?
-
-```
-1D chain 
-
-x—x—x—x
-
-star shape
-    x
-    |
- x–—x–—x
-    |
-    x
-```
-
-## Additional resources
-* Paper "Digital-Analog Quantum Computation"
-by Adrian Parra-Rodriguez, Pavel Lougovski, Lucas Lamata, Enrique Solano, and Mikel Sanz: https://arxiv.org/abs/1812.03637 
-* Paper "Approximating the Quantum Approximate Optimisation Algorithm" by David Headley, Thorge Müller, Ana Martin, Enrique Solano, Mikel Sanz, and Frank K. Wilhelm: https://arxiv.org/abs/2002.12215
-* Overview article about DAQC: https://arxiv.org/abs/2101.08448
-
-## Additional sources you can check out for different frameworks
-
-* Qiskit example: https://qiskit.org/textbook/ch-applications/vqe-molecules.html
-* Cirq example: https://quantumai.google/cirq/experiments/variational_algorithm
-* Pennylane example: https://pennylane.ai/qml/demos/tutorial_vqe.html and some examples for ansätze https://pennylane.ai/qml/glossary/circuit_ansatz.html
-
-
-## Licence
-
-The first notebook `IQM-challenge-variational-quantum-eigensolver.pynb` is part of Qiskit and licensed under Apache Licence 2.0 by IBM. This version has been altered from [the original](https://github.com/Qiskit/qiskit-tutorials/blob/master/tutorials/algorithms/03_vqe_simulation_with_noise.ipynb) by adding a custom ansatz. You can find a copy of this LICENSE in the root folder of this repository or at [http://www.apache.org/licenses/LICENSE-2.0](http://www.apache.org/licenses/LICENSE-2.0).
-
-The other code and the text is licenced under Apache Licence 2.0 by IQM Quantum Computers.
+1. The first step is to map the fermionic Hamiltonian of a given molecule into the qubit Hamiltonian.
+2. Then we need to prepare the guess state, to do that we create/update an ansatz for state preparation on the quantum computer and build the quantum circuit by combining the entangling operations under a given Hamiltonian with single qubit gates. 
+3. Then, on the basis of our qubit Hamiltonian, calculate the state's expectation values.
+4. Finally send the results to a classical optimizer to update the gate/wave parameters and repeat steps $2-4$ until convergence
