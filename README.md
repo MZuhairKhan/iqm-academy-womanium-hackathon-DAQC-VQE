@@ -57,7 +57,7 @@ The choice of Hamiltonian affects the degrees of freedom and the SQRs.
 
 The benefit of DAQC VQE compared to a method with only digital blocks is the ability of entanglement in the analog ansatz. This provides significant speed up and more iterations, thus more accurate result. 
 
-As one can see from the VQE_on_DAQC_by_WinQC.ipynb, our best ansatzes leave us with a $\Delta$ that is an order of magnitude lower to the $\Delta$ produced by digital methods.
+As one can see from the VQE_on_DAQC_by_WinQC.ipynb, our best ansatzes leave us with a $\Delta$ that is an order of magnitude lower than the $\Delta$ produced by digital methods.
 
 ### **Results**
 The tests included three different types of DAQC hamiltonian implementations along with a purely digital implementation of a VQE as a comparison.
