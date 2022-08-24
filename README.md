@@ -63,9 +63,9 @@ As one can see from the VQE_on_DAQC_by_WinQC.ipynb, our best ansatzes leave us w
 The tests included three different types of DAQC hamiltonian implementations along with a purely digital implementation of a VQE as a comparison.
 
 The three different $2$-qubit Hamiltonian implementation types were the following:
- 1. Both time and the hamiltonian coefficients were parameters, but the coefficients were constant between the analog blocks.
- 2. Both time and the hamiltonian coefficients were parameters, and the coefficients could vary between the analog blocks.
- 3. The hamiltonian coefficients were fixed as $1.0$ and time was the only parameter.
+ 1. Both time and the Hamiltonian coefficients were parameters, but the coefficients were constant between the analog blocks.
+ 2. Both time and the Hamiltonian coefficients were parameters, and the coefficients could vary between the analog blocks.
+ 3. The Hamiltonian coefficients were fixed as $1.0$ and time was the only parameter.
 
 A purely digital implementation of VQE is also used as a comparison.
 
@@ -75,7 +75,7 @@ Below are the graphs comparing the three different implementations and how well 
 
 ![image.png](https://i.imgur.com/6L00RHo.png)
 
-We have implemented a function that plots all the different ways of simulating our ansatz. To illustrate, we have plotted the results of our best performing ansatz; the ansatz with fixed Hamiltonian coefficients of $1.0$ and parametrised time with 2 analog-digital block pairs ($D-A-D-A-D$).
+We have implemented a function that plots all the different ways of simulating our ansatz. To illustrate, we have plotted the results of our best performing ansatz; the ansatz with fixed Hamiltonian coefficients of $1.0$ and parametrised time with 2 analog-digital block pairs (D-A-D-A-D).
 
 Our results are as follows:
 
@@ -98,3 +98,5 @@ Delta from reference energy value is $-0.00458$
 **Next Steps**
 
 The next logical step for the VQE with the DAQC framework for the $H_2$ molecule would be to increase the number of qubits to four since that would expand the Hilbert space, and that would yield better results. Currently, it is impossible for Qiskit to create hamiltonians with Y gates, because we can not transform the Parameter to a float, as shown [here](https://github.com/Qiskit/qiskit-terra/issues/4751). However, the commenters showed some possible ways this may be feasible in the future. Along with this, the complexity of the simulated molecule could be increased to a system requiring more qubits such as the $\text H_2\text O$ molecule. 
+
+Furthermore, with more qubits, we will be able to incorporate more ways of connecting the qubits, i.e. in a star formation or a line formation. Ising_hamiltonian.ipynb can be used to generalize the generation of Ising Hamiltonians given a set of connectivities or a set of connectivities coefficients. Different configurations will result in different results, and finding out which configuration results in the most accurate answers will be an important question we will have to tackle in the future.
